@@ -1,19 +1,25 @@
-import BaseSchema from '@ioc:Adonis/Lucid/Schema'
+import BaseSchema from "@ioc:Adonis/Lucid/Schema";
 
 export default class extends BaseSchema {
-  protected tableName = 'admins'
+  protected tableName = "admins";
 
-  public async up () {
+  public async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id').primary();
-      table.integer("user_id").unsigned().notNullable().references("id").inTable("users").onDelete("CASCADE");
+      table.increments("id").primary();
+      table
+        .integer("user_id")
+        .unsigned()
+        .notNullable()
+        .references("id")
+        .inTable("users")
+        .onDelete("CASCADE");
 
-      table.string('nome', 255).notNullable();
-      table.timestamp('updated_at');
-    })
+      table.string("nome", 255).notNullable();
+      table.timestamp("updated_at");
+    });
   }
 
-  public async down () {
-    this.schema.dropTable(this.tableName)
+  public async down() {
+    this.schema.dropTable(this.tableName);
   }
 }

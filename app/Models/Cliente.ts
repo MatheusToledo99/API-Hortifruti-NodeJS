@@ -1,6 +1,6 @@
-import { DateTime } from 'luxon'
-import { BaseModel, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
-import Endereco from './Endereco';
+import { DateTime } from "luxon";
+import { BaseModel, column, HasMany, hasMany } from "@ioc:Adonis/Lucid/Orm";
+import Endereco from "./Endereco";
 
 export default class Cliente extends BaseModel {
   @column({ isPrimary: true })
