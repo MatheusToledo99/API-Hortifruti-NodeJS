@@ -35,7 +35,7 @@ export default class Estabelecimento extends BaseModel {
   @manyToMany(() => MeioPagamento, {
     localKey: "id",
     relatedKey: "id",
-    pivotTable: "estabelecimentos_meios_pagamentos",
+    pivotTable: "estabelecimento_meio_pagamentos",
     pivotForeignKey: "estabelecimento_id",
     pivotRelatedForeignKey: "meio_pagamento_id",
   })
