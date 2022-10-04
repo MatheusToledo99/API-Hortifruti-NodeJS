@@ -1,29 +1,23 @@
 import BaseSchema from "@ioc:Adonis/Lucid/Schema";
 
 export default class extends BaseSchema {
-  protected tableName = "pedidos_statuses";
+  protected tableName = "estabelecimento_meio_pagamentos";
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table
-        .integer("pedido_id")
+        .integer("estabelecimento_id")
         .unsigned()
         .notNullable()
         .references("id")
-        .inTable("pedidos");
-
+        .inTable("estabelecimentos");
       table
-        .integer("status_id")
+        .integer("meio_pagamento_id")
         .unsigned()
         .notNullable()
         .references("id")
-        .inTable("statuses");
-
-      table.string("observacao");
-
-      table.timestamp("created_at");
-
-      table.primary(["pedido_id", "status_id"]);
+        .inTable("meio_pagamentos");
+      table.primary(["estabelecimento_id", "meio_pagamento_id"]);
     });
   }
 
