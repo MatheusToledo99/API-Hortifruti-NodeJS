@@ -132,7 +132,6 @@ export default class PedidosController {
   public async index({ auth, response }: HttpContextContract) {
     const userAuth = await auth.use("api").authenticate();
     const cliente = await Cliente.findByOrFail("userId", userAuth.id);
-
     const pedidos = await Pedido.query()
       .where("cliente_id", cliente.id)
       .preload("pedido_status", (psQuery) => {
@@ -140,7 +139,7 @@ export default class PedidosController {
       })
       .preload("cliente")
       .preload("estabelecimento")
-      .orderBy("pedido_id", "desc");
+      .orderBy("id", "desc");
 
     return response.ok(pedidos);
   }
