@@ -23,14 +23,12 @@ export default class ClientesController {
         telefone: body.telefone,
       });
 
-      response.ok({ Usurio: user, Cliente: cliente });
+      response.ok({ Cliente: cliente });
     } catch (error) {
-      response
-        .status(400)
-        .json({
-          message:
-            "Servidor não atendeu a requisição pois está com uma sintaxe inválida.",
-        });
+      response.status(400).json({
+        message:
+          "Servidor não atendeu a requisição pois está com uma sintaxe inválida.",
+      });
     }
   }
 

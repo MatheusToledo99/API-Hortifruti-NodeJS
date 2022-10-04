@@ -27,13 +27,14 @@ export default class PedidosController {
       capitalization: "uppercase",
     });
 
-    const formaDePagar = await MeioPagamento.findOrFail(body.meio_pagamento_id);
-
-    console.log("aqui nao aparece");
+    const formaPagamento = await MeioPagamento.findByOrFail(
+      "id",
+      body.meio_pagamento_id
+    );
 
     const estabelecimento = await Estabelecimento.findByOrFail(
       "id",
-      body.estabecimento_id
+      body.estabelecimento_id
     );
 
     const endereco = await Endereco.findByOrFail("id", body.endereco_id);
@@ -51,7 +52,6 @@ export default class PedidosController {
       });
 
       //Busca do custo de entrega e calcular o valor total.
-
       const cidadeEstabelecimento = await CidadesEstabelecimento.query()
         .where("estabelecimento_id", body.estabelecimento_id)
         .where("cidade_id", endereco.cidadeId)
@@ -64,11 +64,15 @@ export default class PedidosController {
         valorPedido = valorPedido + prod.preco * produto.quantidade;
       }
 
+      cidadeEstabelecimento.custo_entrega = Number(
+        cidadeEstabelecimento.custo_entrega
+      );
+
       valorPedido = valorPedido + cidadeEstabelecimento.custo_entrega;
 
       valorPedido = parseFloat(valorPedido.toFixed(2));
 
-      if (body.troco_para !== null && body.troco_para < valorPedido) {
+      if (body.troco_para != null && body.troco_para < valorPedido) {
         transacao.rollback();
         return response.badRequest(
           "O valor para troco deve ser maior que o pedido"
@@ -77,24 +81,24 @@ export default class PedidosController {
 
       const pedido = await Pedido.create({
         hash_id: hash_id,
-        cliente_id: userAuth.id,
+        cliente_id: cliente.id,
         custo_entrega: cidadeEstabelecimento.custo_entrega,
-        estabelecimento_id: body.estabelecimento_id,
-        meio_pagamento_id: formaDePagar.id,
-        observacao: body.observacao,
+        estabelecimento_id: estabelecimento.id,
+        meio_pagamento_id: formaPagamento.id,
         pedido_endereco_id: pedidoEndereco.id,
+        observacao: body.observacao,
         troco_para: body.troco_para,
         valor: valorPedido,
       });
 
-      body.produtos.forEach(async (element) => {
-        let getProduto = await Produto.findByOrFail("id", element.produto_id);
+      await body.produtos.forEach(async (produto) => {
+        await Produto.findByOrFail("id", produto.produto_id);
         await PedidoProduto.create({
           pedido_id: pedido.id,
-          produto_id: element.id,
-          valor: getProduto.preco,
-          quantidade: element.quantidade,
-          observacao: element.observacao,
+          produto_id: produto.produto_id,
+          valor: produto.preco,
+          quantidade: produto.quantidade,
+          observacao: produto.observacao,
         });
       });
 
@@ -110,7 +114,7 @@ export default class PedidosController {
         Cliente: cliente.nome,
         Estabelecimento: estabelecimento.nome,
         Entrega: cidadeEstabelecimento.custo_entrega,
-        Pagamento: formaDePagar.nome,
+        Pagamento: formaPagamento.nome,
         Endereco: pedidoEndereco,
         Observacao: body.observacao,
         Troco_Para: body.troco_para,
@@ -119,7 +123,9 @@ export default class PedidosController {
       });
     } catch (error) {
       transacao.rollback();
-      return response.badRequest("Pedido não concluída, algo deu errado");
+      return response.badRequest(
+        "Pedido não concluída, algo deu errado " + error
+      );
     }
   }
 
