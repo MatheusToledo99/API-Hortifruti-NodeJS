@@ -16,7 +16,6 @@ Route.post("/login", "AuthController.login");
 Route.post("/logout", "AuthController.logout");
 Route.post("/cliente/cadastro", "ClientesController.store");
 Route.post("/admin/cadastro", "AdminsController.store");
-Route.post("/pagamento/cadastro", "MeioPagamentosController.store");
 
 /*------------------------ Rotas Estabelecimento ------------------------*/
 Route.post("/estabelecimento/cadastro", "EstabelecimentosController.store");
