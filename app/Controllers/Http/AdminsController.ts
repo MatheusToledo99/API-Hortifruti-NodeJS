@@ -27,12 +27,10 @@ export default class AdminsController {
 
       response.ok({ Admin: admin });
     } catch (error) {
-      response
-        .status(401)
-        .json({
-          message:
-            "Servidor não atendeu a requisição pois está com uma sintaxe inválida.",
-        });
+      response.status(401).json({
+        message:
+          "Servidor não atendeu a requisição pois está com uma sintaxe inválida.",
+      });
     }
   }
 }

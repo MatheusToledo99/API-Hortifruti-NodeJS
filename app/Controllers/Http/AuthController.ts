@@ -59,10 +59,18 @@ export default class AuthController {
   public async me({ auth, response }: HttpContextContract) {
     const userAuth = await auth.use("api").authenticate();
 
+    let data;
+
     switch (userAuth.tipo) {
       case "clientes":
         const cliente = await Cliente.findByOrFail("userId", userAuth.id);
-        return response.ok({ Cliente: cliente, Usuário: userAuth });
+        data = {
+          id_cliente: cliente.id,
+          nome: cliente.nome,
+          telefone: cliente.telefone,
+          email: userAuth.email,
+        };
+        return response.ok(data);
       case "estabelecimentos":
         const estabelecimento = await Estabelecimento.findByOrFail(
           "userId",

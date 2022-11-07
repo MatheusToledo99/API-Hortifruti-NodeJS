@@ -70,7 +70,7 @@ export default class EstabelecimentosController {
   public async show({ params, response }: HttpContextContract) {
     const estabelecimentoId = params.id;
 
-    let arrayCidades;
+    let arrayCidades: any = [];
 
     const cidadesEstabelecimento = await CidadesEstabelecimento.query().where(
       // Tenho todas relações de um Estabelecimento
@@ -87,7 +87,6 @@ export default class EstabelecimentosController {
       arrayCidades.push({
         id: cidade.id,
         cidade: cidade.nome,
-        ativo: cidade.ativo,
         custo_entrega: cidades_estabelecimento.custo_entrega,
       });
     }

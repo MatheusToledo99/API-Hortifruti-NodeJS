@@ -19,7 +19,7 @@ export default class Categoria extends BaseModel {
   public ativo: string;
 
   @column()
-  public estabecimento_id: number;
+  public estabelecimento_id: number;
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime;
@@ -31,7 +31,7 @@ export default class Categoria extends BaseModel {
   public deletedAt: DateTime | null;
 
   @hasMany(() => Produto, {
-    foreignKey: "categoria_id",
+    foreignKey: "categoriaId",
     localKey: "id",
   })
   public produtos: HasMany<typeof Produto>;
