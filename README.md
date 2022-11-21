@@ -1,0 +1,2 @@
+API Rest contruída em TypeScript com tecnologia NodeJS, utilizando o framework Adonis para uma aplicação de Hortifruti, onde o cliente seleciona a cidade que há estabelecimentos cadastrados, bem como faz pedidos, altera seu cadastro e faz login com segurança por Token.
+Essa API é consumida pelo Front-End (Mobile) em Flutter/Dart, onde seu projeto está também disponível em: https://github.com/MatheusToledo99/app_hortifruti.git
