@@ -69,6 +69,7 @@ export default class AuthController {
           nome: cliente.nome,
           telefone: cliente.telefone,
           email: userAuth.email,
+          password: userAuth.password,
         };
         return response.ok(data);
       case "estabelecimentos":
